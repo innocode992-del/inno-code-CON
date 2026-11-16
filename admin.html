@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#08090d" />
+  <meta name="description" content="لوحة تحكم InnoCode لمتابعة العملاء والجلسات ومحادثات الدعم." />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="InnoCode" />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+  <title>InnoCode — لوحة التحكم</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap');
+    :root{--bg:#08090d;--panel:#101219;--panel2:#141722;--line:rgba(255,255,255,.075);--muted:#8990a2;--text:#f4f6fb;--blue:#6b8cff;--cyan:#57d6ec;--green:#44d6a1;--red:#ff7185;--gold:#f3c76b;--radius:18px}
+    *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:'Cairo',system-ui,sans-serif}body{overflow-x:hidden}
+    body:before,body:after{content:"";position:fixed;pointer-events:none;z-index:0;border-radius:50%;filter:blur(95px);opacity:.17}
+    body:before{width:420px;height:420px;background:#2345a8;top:-180px;right:12%}body:after{width:340px;height:340px;background:#116c80;bottom:-190px;left:8%}
+    button,input{font:inherit}button{cursor:pointer}.hidden{display:none!important}
+    .brand-logo{display:block;width:min(100%,180px);height:54px;object-fit:contain;object-position:center}
+    .app{position:relative;z-index:1;display:grid;grid-template-columns:250px minmax(0,1fr);min-height:100vh;padding:18px;gap:18px;max-width:1800px;margin:auto}
+    .sidebar{background:rgba(15,17,25,.88);border:1px solid var(--line);border-radius:22px;padding:20px 14px;display:flex;flex-direction:column;min-height:calc(100vh - 36px);backdrop-filter:blur(18px)}
+    .brand{display:flex;align-items:center;justify-content:center;gap:12px;padding:5px 8px;background:#e9edec;border:1px solid #ffffff2b;border-radius:14px;margin-bottom:12px}.brand strong{display:block;font-size:15px;letter-spacing:.4px}.brand small{color:var(--muted);font-size:10px;letter-spacing:1.5px;direction:ltr;display:block;text-align:right}
+    .nav-title{font-size:10px;color:#687084;padding:22px 12px 9px;font-weight:700}.nav{display:grid;gap:6px}.nav button{display:flex;align-items:center;gap:12px;padding:11px 13px;color:#aab0c0;background:transparent;border:1px solid transparent;border-radius:12px;text-align:right;font-size:13px;transition:.2s}.nav button:hover{background:#ffffff08;color:white}.nav button.active{color:#fff;background:linear-gradient(100deg,#344d9a44,#1c9db022);border-color:#6584ff3a}.nav .ico{font-size:17px;width:22px;text-align:center}.side-bottom{margin-top:auto;border-top:1px solid var(--line);padding:16px 6px 0}.user-chip{display:flex;align-items:center;gap:10px;padding:9px 7px;margin-bottom:9px}.avatar{width:35px;height:35px;border-radius:12px;background:#283453;color:#b8c9ff;display:grid;place-items:center;font-weight:900}.user-chip b{display:block;font-size:12px}.user-chip small{display:block;color:var(--muted);font-size:10px}.logout{width:100%;text-align:right;color:#bd8791;background:#ff637a0d;border:1px solid #ff637a20;border-radius:10px;padding:10px 12px;font-size:12px}
+    .main{min-width:0}.topbar{display:flex;justify-content:space-between;align-items:center;padding:7px 4px 20px;gap:15px}.page-heading h1{font-size:24px;margin:0;font-weight:800}.page-heading p{margin:2px 0 0;color:var(--muted);font-size:12px}.top-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.live-pill{display:flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid #42d6a12c;background:#42d6a10d;border-radius:30px;color:#8de8c6;font-size:11px}.dot{width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 12px var(--green)}.refresh,.install-btn{border:1px solid var(--line);border-radius:11px;background:#ffffff08;color:#dce1ef;padding:8px 12px;font-size:12px}.install-btn{border-color:#748cff66;background:linear-gradient(120deg,#405dcf33,#1e9eb233);color:#f1f4ff;font-weight:700}.install-btn:disabled{opacity:.65;cursor:default}
+    .content{display:grid;gap:18px}.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.stat{position:relative;overflow:hidden;background:linear-gradient(145deg,rgba(21,24,35,.94),rgba(14,16,23,.94));border:1px solid var(--line);border-radius:var(--radius);padding:18px}.stat:after{content:"";position:absolute;width:95px;height:95px;border-radius:50%;background:var(--glow,#536fff);filter:blur(55px);opacity:.18;left:-25px;top:-38px}.stat-top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:12px}.stat-icon{width:34px;height:34px;display:grid;place-items:center;border-radius:11px;background:#ffffff0c;font-size:16px}.stat strong{display:block;font-size:29px;margin-top:12px;line-height:1.2}.stat small{display:block;color:#778094;font-size:10px;margin-top:8px}
+    .panel{background:rgba(16,18,26,.92);border:1px solid var(--line);border-radius:var(--radius);padding:18px;min-width:0}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:15px}.panel-head h2{font-size:14px;margin:0}.panel-head span{font-size:11px;color:var(--muted)}.grid-two{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(280px,.85fr);gap:18px}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;white-space:nowrap}th{text-align:right;color:#727b8e;font-size:10px;font-weight:600;padding:11px 9px;border-bottom:1px solid var(--line)}td{font-size:11px;color:#d7dbea;padding:13px 9px;border-bottom:1px solid #ffffff08}tbody tr:last-child td{border-bottom:0}tbody tr:hover{background:#ffffff05}.person{display:flex;align-items:center;gap:9px}.person .avatar{width:29px;height:29px;font-size:11px;border-radius:9px}.person b{font-size:11px;display:block}.person small{font-size:9px;color:var(--muted);display:block;direction:ltr;text-align:right}.status{display:inline-flex;align-items:center;gap:6px;padding:4px 9px;border-radius:30px;font-size:10px}.status.online{color:#79e5bd;background:#45d4a018}.status.offline{color:#a5adbd;background:#ffffff0c}.status .dot{width:5px;height:5px;box-shadow:none}.muted{color:var(--muted)}.empty{color:#788195;text-align:center;padding:30px 12px;font-size:12px}
+    .quick-list{display:grid;gap:9px}.quick-row{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid #ffffff08}.quick-row:last-child{border:0}.quick-row b{font-size:11px}.quick-row small{font-size:10px;color:var(--muted);display:block;margin-top:2px}.quick-row time{font-size:10px;color:#aab3c7;direction:ltr}
+    .toolbar{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}.search{flex:1;min-width:210px;background:#090b11;border:1px solid var(--line);border-radius:11px;padding:10px 13px;color:white;outline:none;font-size:12px}.search:focus{border-color:#5879e9}.count-label{font-size:11px;color:var(--muted)}
+    .messages-layout{display:grid;grid-template-columns:290px minmax(0,1fr);gap:14px;min-height:610px}.chat-list{border:1px solid var(--line);background:#0b0d13;border-radius:14px;overflow:auto;max-height:680px}.chat-item{display:flex;gap:10px;padding:13px;border-bottom:1px solid #ffffff08;cursor:pointer}.chat-item:hover,.chat-item.selected{background:#5576f214}.chat-item b{display:block;font-size:11px}.chat-item small{display:block;color:var(--muted);font-size:10px;margin-top:3px}.chat-item p{font-size:10px;color:#9ca5b7;margin:5px 0 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:190px}.chat-window{border:1px solid var(--line);background:#0b0d13;border-radius:14px;display:flex;flex-direction:column;min-width:0;min-height:610px}.chat-head{padding:13px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px}.chat-head b{font-size:12px}.chat-head small{display:block;color:var(--muted);font-size:10px;margin-top:2px}.chat-body{padding:18px;display:flex;flex-direction:column;gap:11px;overflow:auto;flex:1;max-height:490px}.bubble{max-width:min(78%,510px);padding:10px 13px;border-radius:14px;font-size:11px;line-height:1.8;overflow-wrap:anywhere}.bubble.customer{align-self:flex-start;background:#1b2232;border:1px solid #ffffff0a;border-bottom-right-radius:4px}.bubble.admin{align-self:flex-end;background:linear-gradient(120deg,#344e9b,#236c83);border-bottom-left-radius:4px}.bubble small{display:block;color:#aab4ca;font-size:9px;margin-top:3px}.chat-compose{display:flex;gap:9px;padding:13px;border-top:1px solid var(--line)}.chat-compose input{flex:1;min-width:0;background:#151925;border:1px solid var(--line);border-radius:11px;color:white;padding:11px 13px;outline:none;font-size:11px}.chat-compose button{border:0;border-radius:11px;background:#4668df;color:white;padding:0 18px;font-weight:700;font-size:12px}.chat-compose button:disabled{opacity:.4;cursor:not-allowed}
+    .toast{position:fixed;z-index:20;bottom:22px;left:22px;padding:12px 16px;border-radius:12px;background:#1b2434;border:1px solid #6584ff44;color:#e9edff;font-size:12px;box-shadow:0 12px 40px #0008;max-width:min(90vw,420px)}
+    .install-help{position:fixed;inset:0;z-index:30;background:#02040bd9;backdrop-filter:blur(10px);display:grid;place-items:center;padding:20px}.install-help.hidden{display:none}.install-help-card{width:min(100%,440px);background:#141824;border:1px solid #ffffff18;border-radius:20px;padding:22px;box-shadow:0 25px 90px #000b}.install-help-card h2{font-size:18px;margin:0 0 12px}.install-help-card p{font-size:13px;line-height:2;color:#c5ccda;margin:8px 0}.install-help-card .close-help{float:left;border:1px solid var(--line);border-radius:9px;background:#ffffff0a;color:#fff;padding:5px 10px}
+    @media (display-mode:standalone){body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}}
+    @media(max-width:1050px){.app{grid-template-columns:210px 1fr;padding:12px;gap:12px}.stats{grid-template-columns:repeat(2,1fr)}.grid-two{grid-template-columns:1fr}}
+    @media(max-width:720px){.app{display:block;padding:10px}.sidebar{min-height:0;padding:12px;margin-bottom:12px}.brand{padding:4px 7px;margin-bottom:10px}.brand-logo{width:154px;height:46px}.nav-title,.side-bottom{display:none}.nav{display:flex;overflow:auto;padding-top:12px}.nav button{white-space:nowrap;padding:9px 11px}.nav button .ico{width:auto}.topbar{align-items:flex-start;flex-wrap:wrap}.top-actions{margin-inline-start:auto}.page-heading h1{font-size:20px}.live-pill{display:none}.stats{gap:9px}.stat{padding:13px}.stat strong{font-size:24px}.messages-layout{grid-template-columns:1fr}.chat-list{max-height:230px}.chat-window{min-height:480px}.chat-body{max-height:350px}.panel{padding:13px}}
+    @media(max-width:390px){.install-btn,.refresh{padding:8px 9px;font-size:11px}.top-actions{gap:6px}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  </style>
+</head>
+<body>
+  <div id="appView" class="app">
+    <aside class="sidebar">
+      <div class="brand"><img class="brand-logo" src="./assets/innocode-wordmark.png" alt="InnoCode" /></div>
+      <div class="nav-title">القائمة الرئيسية</div>
+      <nav class="nav">
+        <button class="active" data-view="overview"><span class="ico">◫</span>نظرة عامة</button>
+        <button data-view="customers"><span class="ico">♙</span>العملاء</button>
+        <button data-view="sessions"><span class="ico">◷</span>سجل الزيارات</button>
+        <button data-view="messages"><span class="ico">▤</span>محادثات الدعم</button>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="page-heading"><h1 id="pageTitle">نظرة عامة</h1><p id="pageSubtitle">متابعة نشاط العملاء ورسائل الدعم في مكان واحد</p></div>
+        <div class="top-actions"><div class="live-pill"><span class="dot"></span>مزامنة مباشرة عند توفر الصلاحية</div><button id="installBtn" class="install-btn" type="button">↓ تثبيت التطبيق</button><button id="refreshBtn" class="refresh" type="button">⟳ تحديث</button></div>
+      </header>
+      <div class="panel" style="margin:0 4px 16px;padding:12px 16px;border-color:#e6b65b33;background:#e6b65b0b;color:#e8d4a5;font-size:12px;line-height:1.9">
+        تم إلغاء شاشة تسجيل الدخول. قاعدة بيانات العملاء ما زالت محمية؛ عرض بياناتها دون نموذج دخول يحتاج ربطًا آمنًا من جهة الخادم، ولن نفتحها للعامة.
+      </div>
+      <section id="overviewView" class="content">
+        <div class="stats">
+          <article class="stat" style="--glow:#6482ff"><div class="stat-top"><span>إجمالي العملاء</span><span class="stat-icon">♙</span></div><strong id="statCustomers">—</strong><small>العملاء المسجلون في قاعدة البيانات</small></article>
+          <article class="stat" style="--glow:#43d9a4"><div class="stat-top"><span>متصلون الآن</span><span class="stat-icon">●</span></div><strong id="statOnline">—</strong><small>نشاط مسجل خلال آخر 90 ثانية</small></article>
+          <article class="stat" style="--glow:#58cce5"><div class="stat-top"><span>زيارات اليوم</span><span class="stat-icon">◷</span></div><strong id="statSessions">—</strong><small>جلسات بدأت منذ بداية اليوم</small></article>
+          <article class="stat" style="--glow:#ba83ff"><div class="stat-top"><span>محادثات الدعم</span><span class="stat-icon">▤</span></div><strong id="statChats">—</strong><small>محادثات محفوظة</small></article>
+        </div>
+        <div class="grid-two">
+          <section class="panel"><div class="panel-head"><h2>أحدث زيارات العملاء</h2><span>آخر التحديثات</span></div><div class="table-wrap"><table><thead><tr><th>العميل</th><th>وقت الدخول</th><th>آخر ظهور</th><th>الحالة</th></tr></thead><tbody id="recentSessions"></tbody></table></div></section>
+          <section class="panel"><div class="panel-head"><h2>آخر محادثات الدعم</h2><span>مباشر</span></div><div id="recentChats" class="quick-list"></div></section>
+        </div>
+      </section>
+
+      <section id="customersView" class="content hidden">
+        <section class="panel"><div class="panel-head"><h2>قاعدة العملاء</h2><span id="customerCount">0 عميل</span></div><div class="toolbar"><input id="customerSearch" class="search" placeholder="ابحث بالاسم أو رقم الهاتف..." /><span class="count-label">بيانات العملاء من Firebase</span></div><div class="table-wrap"><table><thead><tr><th>العميل</th><th>رقم الهاتف</th><th>آخر نشاط</th><th>تاريخ التسجيل</th><th>الحالة</th></tr></thead><tbody id="customersTable"></tbody></table></div></section>
+      </section>
+
+      <section id="sessionsView" class="content hidden">
+        <section class="panel"><div class="panel-head"><h2>سجل الدخول والخروج</h2><span id="sessionCount">0 جلسة</span></div><div class="toolbar"><input id="sessionSearch" class="search" placeholder="ابحث باسم العميل أو رقم الهاتف..." /></div><div class="table-wrap"><table><thead><tr><th>العميل</th><th>تاريخ الدخول</th><th>تاريخ الخروج</th><th>آخر ظهور</th><th>الحالة</th><th>الصفحة</th></tr></thead><tbody id="sessionsTable"></tbody></table></div></section>
+      </section>
+
+      <section id="messagesView" class="content hidden">
+        <section class="panel"><div class="panel-head"><h2>مركز محادثات الدعم</h2><span>اختر محادثة لعرض الرسائل والرد عليها</span></div>
+          <div class="messages-layout"><div id="chatList" class="chat-list"></div>
+            <div class="chat-window"><div class="chat-head"><div><b id="chatTitle">اختر محادثة</b><small id="chatPhone">ستظهر الرسائل هنا</small></div><span id="chatStatus" class="status offline">غير محدد</span></div><div id="chatBody" class="chat-body"><div class="empty">اختر عميلًا من قائمة المحادثات لعرض الشات</div></div><form id="replyForm" class="chat-compose"><input id="replyInput" placeholder="اكتب ردك للعميل..." autocomplete="off" disabled /><button id="replyButton" type="submit" disabled>إرسال</button></form></div>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+  <div id="toast" class="toast hidden" role="status"></div>
+  <div id="installHelp" class="install-help hidden" role="dialog" aria-modal="true" aria-labelledby="installHelpTitle">
+    <div class="install-help-card">
+      <button id="closeInstallHelp" class="close-help" type="button" aria-label="إغلاق">✕</button>
+      <h2 id="installHelpTitle">تثبيت InnoCode على جهازك</h2>
+      <p id="installInstructions">يمكنك تثبيت التطبيق من قائمة المتصفح.</p>
+      <p>بعد التثبيت ستجد InnoCode كأيقونة مستقلة، ويفتح في نافذة خاصة مثل التطبيقات.</p>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js';
+    import { getFirestore, collection, doc, query, orderBy, limit, onSnapshot, addDoc, updateDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js';
+
+    const firebaseConfig = {
+      apiKey: 'AIzaSyBeD62DbxPGb5NBI1r7NYCqMTXJkWVfN4E',
+      authDomain: 'innocode-b499c.firebaseapp.com',
+      projectId: 'innocode-b499c',
+      storageBucket: 'innocode-b499c.firebasestorage.app',
+      messagingSenderId: '1020343040309',
+      appId: '1:1020343040309:web:0e4d769c4aaeefcefbf47c'
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const $ = (id) => document.getElementById(id);
+    const state = { customers: [], sessions: [], chats: [], messages: [], selectedUid: null, unMessages: null, unsubs: [], view: 'overview' };
+
+    // Progressive Web App: install prompt where supported, guided manual install elsewhere.
+    let deferredInstallPrompt = null;
+    const installButton = $('installBtn');
+    const installHelp = $('installHelp');
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const isAndroid = /Android/i.test(navigator.userAgent);
+    const isMacSafari = /Macintosh/.test(navigator.userAgent) && /Safari/.test(navigator.userAgent) && !/Chrome|Chromium|Edg/.test(navigator.userAgent);
+    const alreadyInstalled = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+    if (alreadyInstalled) { installButton.textContent = '✓ التطبيق مثبت'; installButton.disabled = true; }
+    window.addEventListener('beforeinstallprompt', (event) => {
+      event.preventDefault();
+      deferredInstallPrompt = event;
+      installButton.textContent = '↓ تثبيت التطبيق';
+    });
+    window.addEventListener('appinstalled', () => {
+      deferredInstallPrompt = null;
+      installButton.textContent = '✓ التطبيق مثبت';
+      installButton.disabled = true;
+      toast('تم تثبيت InnoCode على جهازك.');
+    });
+    function showInstallHelp() {
+      let instructions;
+      if (isIOS) instructions = 'على iPhone أو iPad: افتح هذا الرابط في متصفح Safari، اضغط زر المشاركة، ثم اختر «إضافة إلى الشاشة الرئيسية» واضغط «إضافة».';
+      else if (isAndroid) instructions = 'على Android: افتح الرابط في Chrome، اضغط قائمة ⋮، ثم اختر «تثبيت التطبيق» أو «إضافة إلى الشاشة الرئيسية». إذا ظهر زر التثبيت داخل الصفحة فاستخدمه.';
+      else if (isMacSafari) instructions = 'على Mac باستخدام Safari: من القائمة File اختر «Add to Dock» لإضافة InnoCode كتطبيق على الجهاز.';
+      else instructions = 'على الكمبيوتر: افتح الرابط في Google Chrome أو Microsoft Edge، ثم اضغط رمز التثبيت بجوار شريط العنوان، أو افتح القائمة واختر «تثبيت InnoCode» / «Install InnoCode». في Firefox استخدم إنشاء اختصار من قائمة المتصفح إن لم يظهر خيار التثبيت.';
+      $('installInstructions').textContent = instructions;
+      installHelp.classList.remove('hidden');
+    }
+    installButton.addEventListener('click', async () => {
+      if (alreadyInstalled) return;
+      if (!deferredInstallPrompt) { showInstallHelp(); return; }
+      deferredInstallPrompt.prompt();
+      const choice = await deferredInstallPrompt.userChoice;
+      if (choice?.outcome === 'accepted') toast('تم قبول تثبيت InnoCode.');
+      deferredInstallPrompt = null;
+    });
+    $('closeInstallHelp').addEventListener('click', () => installHelp.classList.add('hidden'));
+    installHelp.addEventListener('click', (event) => { if (event.target === installHelp) installHelp.classList.add('hidden'); });
+    if ('serviceWorker' in navigator && window.isSecureContext) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js', { scope: './' }).catch((error) => console.warn('[InnoCode PWA] Service worker registration failed:', error)));
+    }
+    const fmt = (v) => {
+      if (!v) return '—';
+      const d = v?.toDate ? v.toDate() : new Date(v);
+      if (Number.isNaN(d.getTime())) return '—';
+      return new Intl.DateTimeFormat('ar-EG', { dateStyle: 'medium', timeStyle: 'short' }).format(d);
+    };
+    const millis = (v) => v?.toMillis ? v.toMillis() : (v ? new Date(v).getTime() : 0);
+    const safe = (s='') => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const initials = (s='عميل') => safe(String(s).trim().slice(0,1) || 'ع');
+    function toast(message){ $('toast').textContent=message; $('toast').classList.remove('hidden'); setTimeout(()=>$('toast').classList.add('hidden'),3200); }
+    function online(session){ return !session.endedAt && Date.now() - millis(session.lastSeenAt) < 90000; }
+    function emptyRow(cols, text){ return `<tr><td colspan="${cols}" class="empty">${text}</td></tr>`; }
+    function person(name, phone){ return `<div class="person"><div class="avatar">${initials(name)}</div><div><b>${safe(name || 'عميل بدون اسم')}</b><small>${safe(phone || 'لا يوجد رقم هاتف')}</small></div></div>`; }
+
+    $('refreshBtn').addEventListener('click', ()=>toast('البيانات تتحدث تلقائيًا عند وصول أي تغيير من Firebase.'));
+
+    // واجهة اللوحة تفتح مباشرة دون شاشة تسجيل دخول.
+    // تبقى قواعد Firestore محمية؛ يلزم توفير وصول إداري آمن من جهة الخادم لقراءة بيانات العملاء.
+    startListeners();
+
+    function stopListeners(){ state.unsubs.forEach(fn=>fn()); state.unsubs=[]; if(state.unMessages){state.unMessages();state.unMessages=null;} }
+    function startListeners(){
+      state.unsubs.push(onSnapshot(query(collection(db,'customers'),orderBy('lastSeenAt','desc'),limit(250)), snap=>{state.customers=snap.docs.map(d=>({id:d.id,...d.data()})); renderAll();}, err=>toast(err.code==='permission-denied' ? 'Firebase يمنع القراءة بدون صلاحية مشرف. اللوحة فتحت بدون تسجيل دخول لكن قاعدة البيانات ما زالت محمية.' : 'تعذر قراءة العملاء: '+err.message)));
+      state.unsubs.push(onSnapshot(query(collection(db,'sessions'),orderBy('startedAt','desc'),limit(400)), snap=>{state.sessions=snap.docs.map(d=>({id:d.id,...d.data()}));renderAll();}, err=>toast(err.code==='permission-denied' ? 'قراءة سجل الزيارات تحتاج اتصالًا إداريًا آمنًا.' : 'تعذر قراءة سجل الزيارات: '+err.message)));
+      state.unsubs.push(onSnapshot(query(collection(db,'chats'),orderBy('updatedAt','desc'),limit(200)), snap=>{state.chats=snap.docs.map(d=>({id:d.id,...d.data()}));renderAll();}, err=>toast(err.code==='permission-denied' ? 'قراءة محادثات الدعم تحتاج اتصالًا إداريًا آمنًا.' : 'تعذر قراءة المحادثات: '+err.message)));
+    }
+    function renderAll(){renderStats();renderRecentSessions();renderRecentChats();renderCustomers();renderSessions();renderChatList();}
+    function renderStats(){
+      const day=new Date();day.setHours(0,0,0,0); const today=day.getTime();
+      $('statCustomers').textContent=state.customers.length;
+      $('statOnline').textContent=state.sessions.filter(online).length;
+      $('statSessions').textContent=state.sessions.filter(s=>millis(s.startedAt)>=today).length;
+      $('statChats').textContent=state.chats.length;
+    }
+    function renderRecentSessions(){
+      const rows=state.sessions.slice(0,7);
+      $('recentSessions').innerHTML=rows.length?rows.map(s=>`<tr><td>${person(s.name,s.phone)}</td><td>${fmt(s.startedAt)}</td><td>${fmt(s.lastSeenAt)}</td><td><span class="status ${online(s)?'online':'offline'}"><i class="dot"></i>${online(s)?'متصل':'غادر'}</span></td></tr>`).join(''):emptyRow(4,'لا توجد زيارات مسجلة حتى الآن.');
+    }
+    function renderRecentChats(){
+      $('recentChats').innerHTML=state.chats.length?state.chats.slice(0,6).map(c=>`<div class="quick-row"><div><b>${safe(c.name||'عميل بدون اسم')}</b><small>${safe(c.lastMessage||'لا توجد رسائل')}</small></div><time>${fmt(c.updatedAt)}</time></div>`).join(''):'<div class="empty">لا توجد محادثات بعد.</div>';
+    }
+    function renderCustomers(){
+      const q=($('customerSearch')?.value||'').trim().toLowerCase(); const data=state.customers.filter(c=>(c.name||'').toLowerCase().includes(q)||(c.phone||'').toLowerCase().includes(q));
+      $('customerCount').textContent=`${data.length} عميل`;
+      $('customersTable').innerHTML=data.length?data.map(c=>{const latest=state.sessions.find(s=>s.uid===c.id);return `<tr><td>${person(c.name,c.phone)}</td><td dir="ltr">${safe(c.phone||'—')}</td><td>${fmt(c.lastSeenAt)}</td><td>${fmt(c.createdAt)}</td><td><span class="status ${latest&&online(latest)?'online':'offline'}"><i class="dot"></i>${latest&&online(latest)?'متصل':'غير متصل'}</span></td></tr>`}).join(''):emptyRow(5,'لا يوجد عملاء مطابقون للبحث.');
+    }
+    function renderSessions(){
+      const q=($('sessionSearch')?.value||'').trim().toLowerCase(); const data=state.sessions.filter(s=>(s.name||'').toLowerCase().includes(q)||(s.phone||'').toLowerCase().includes(q));
+      $('sessionCount').textContent=`${data.length} جلسة`;
+      $('sessionsTable').innerHTML=data.length?data.map(s=>`<tr><td>${person(s.name,s.phone)}</td><td>${fmt(s.startedAt)}</td><td>${fmt(s.endedAt)}</td><td>${fmt(s.lastSeenAt)}</td><td><span class="status ${online(s)?'online':'offline'}"><i class="dot"></i>${online(s)?'متصل الآن':(s.endedAt?'انتهت':'انقطع الاتصال')}</span></td><td dir="ltr">${safe(s.page||'—')}</td></tr>`).join(''):emptyRow(6,'لا توجد جلسات مسجلة حتى الآن.');
+    }
+    function renderChatList(){
+      $('chatList').innerHTML=state.chats.length?state.chats.map(c=>`<div class="chat-item ${state.selectedUid===c.id?'selected':''}" data-chat="${safe(c.id)}"><div class="avatar">${initials(c.name)}</div><div style="min-width:0"><b>${safe(c.name||'عميل بدون اسم')}</b><small dir="ltr">${safe(c.phone||'بدون رقم هاتف')}</small><p>${safe(c.lastMessage||'ابدأ المحادثة')}</p></div></div>`).join(''):'<div class="empty">لا توجد محادثات. ستظهر هنا بعد أن يرسل عميل رسالة من الموقع.</div>';
+      if(state.selectedUid){ const c=state.chats.find(x=>x.id===state.selectedUid); if(c){$('chatTitle').textContent=c.name||'عميل بدون اسم';$('chatPhone').textContent=c.phone||'لا يوجد رقم هاتف';} }
+    }
+    function selectChat(uid){
+      state.selectedUid=uid; renderChatList();
+      const c=state.chats.find(x=>x.id===uid); if(!c)return;
+      $('chatTitle').textContent=c.name||'عميل بدون اسم'; $('chatPhone').textContent=c.phone||'لا يوجد رقم هاتف'; $('chatStatus').textContent='محادثة محفوظة'; $('chatStatus').className='status online';
+      $('replyInput').disabled=false; $('replyButton').disabled=false;
+      if(state.unMessages)state.unMessages();
+      $('chatBody').innerHTML='<div class="empty">جارٍ تحميل الرسائل...</div>';
+      state.unMessages=onSnapshot(query(collection(db,'chats',uid,'messages'),orderBy('createdAt','asc'),limit(300)), snap=>{
+        state.messages=snap.docs.map(d=>({id:d.id,...d.data()}));
+        $('chatBody').innerHTML=state.messages.length?state.messages.map(m=>`<div class="bubble ${m.sender==='admin'?'admin':'customer'}">${safe(m.text||'')}<small>${m.sender==='admin'?'فريق الدعم':'العميل'} · ${fmt(m.createdAt)}</small></div>`).join(''):'<div class="empty">لا توجد رسائل في هذه المحادثة بعد.</div>';
+        $('chatBody').scrollTop=$('chatBody').scrollHeight;
+      },err=>toast('تعذر تحميل الرسائل: '+err.message));
+    }
+    $('chatList').addEventListener('click',e=>{const item=e.target.closest('[data-chat]');if(item)selectChat(item.dataset.chat);});
+    $('replyForm').addEventListener('submit',async e=>{
+      e.preventDefault(); const text=$('replyInput').value.trim(); const uid=state.selectedUid; if(!text||!uid)return;
+      $('replyButton').disabled=true;
+      try{
+        await addDoc(collection(db,'chats',uid,'messages'),{sender:'admin',text,createdAt:serverTimestamp(),seen:false});
+        await updateDoc(doc(db,'chats',uid),{lastMessage:text,updatedAt:serverTimestamp()});
+        $('replyInput').value='';
+      }catch(err){toast('تعذر إرسال الرد: '+err.message);}
+      finally{$('replyButton').disabled=false;}
+    });
+    $('customerSearch').addEventListener('input',renderCustomers); $('sessionSearch').addEventListener('input',renderSessions);
+    document.querySelectorAll('[data-view]').forEach(btn=>btn.addEventListener('click',()=>{
+      state.view=btn.dataset.view; document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b===btn));
+      ['overview','customers','sessions','messages'].forEach(v=>$(`${v}View`).classList.toggle('hidden',v!==state.view));
+      const titles={overview:['نظرة عامة','متابعة نشاط العملاء ورسائل الدعم في مكان واحد'],customers:['العملاء','بيانات العملاء وأرقام هواتفهم وآخر نشاط'],sessions:['سجل الزيارات','أوقات الدخول والخروج وآخر ظهور لكل جلسة'],messages:['محادثات الدعم','اقرأ رسائل العملاء ورد عليهم مباشرة']};
+      $('pageTitle').textContent=titles[state.view][0];$('pageSubtitle').textContent=titles[state.view][1];
+    }));
+  </script>
+</body>
+</html>
